@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'student',
   password : 'student',
-  database : 'chatterboxdb'
+  database : 'chatterbox_db'
 });
 
 connection.connect();

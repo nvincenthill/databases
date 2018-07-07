@@ -49,16 +49,21 @@ describe('Persistent Node Chat Server', function() {
 
         // TODO: You might have to change this test to get all the data from
         // your message table, since this is schema-dependent.
-        var queryString = 'SELECT * FROM messages';
+        console.log('Weve reached this point')
+        var queryString = `INSERT INTO messages(user_name, room_name, message_text) VALUES ('Cal ', 'Cals Room', 'In mercy\'s name, three days is all I need.')`;
         var queryArgs = [];
 
-        dbConnection.query(queryString, queryArgs, function(err, results) {
+        dbConnection.query('SELECT * FROM messages', queryArgs, function(err, results) {
+          if(err){
+            console.log('The error is: ', err);
+          }
+          console.log('The results are: ', results);
           // Should have one result:
           expect(results.length).to.equal(1);
 
           // TODO: If you don't have a column named text, change this test.
           expect(results[0].message_text).to.equal('In mercy\'s name, three days is all I need.');
-
+      
           done();
         });
       });
@@ -67,15 +72,14 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-    var queryString = `
-        INSERT INTO messages(user_name, room_name, message_text)
-        VALUES ('Nick', 'Nick Room', 'This is a test message');`;
+    var queryString = 'SELECT * FROM messages';
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave
     // them up to you. */
 
     // we removed query args ???
-    dbConnection.query(queryString, function(err) {
+    var queryArgs = ['Cal'];
+    dbConnection.query(queryString, queryArgs, function(err) {
       if (err) { throw err; }
 
       // Now query the Node chat server and see if it returns

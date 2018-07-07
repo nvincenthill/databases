@@ -23,10 +23,20 @@ CREATE TABLE users (
 
 /* Create other tables and define schemas for them here! */
 
+      -- initialize db
+      -- mysql -u student < server/schema.sql
 
+      -- enter interface
+      -- mysql -u student -p
 
+      -- drop db
+      -- DROP DATABASE chatterbox_db
 
-/*  Execute this file from the command line by typing:
- *    mysql -u student < server/schema.sql
- *  to create the database and the tables.*/
+      -- clear table
+      -- TRUNCATE TABLE users;
+
+      -- insert sample DATABASE
+      -- INSERT INTO messages(user_name, room_name, message_text)
+      -- VALUES ('Cal ', 'Nicks Room', 'This will work');
+
 
