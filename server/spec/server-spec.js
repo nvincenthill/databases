@@ -16,11 +16,16 @@ describe('Persistent Node Chat Server', function() {
     });
     dbConnection.connect();
 
-    var tablename = "messages";
+    var tablenames = ["messages", "users"];
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
-    dbConnection.query('truncate ' + tablename, done);
+    // console.log("flushing messages");
+      dbConnection.query(`truncate table ${tablenames[0]}`);
+    // console.log("flushing users");
+      // dbConnection.query(`truncate table ${tablenames[1]}`, done);
+    // console.log("done flushing");
+    done();
   });
 
   afterEach(function() {
@@ -49,7 +54,7 @@ describe('Persistent Node Chat Server', function() {
 
         // TODO: You might have to change this test to get all the data from
         // your message table, since this is schema-dependent.
-        console.log('Weve reached this point')
+        
         var queryString = `INSERT INTO messages(user_name, room_name, message_text) VALUES ('Cal ', 'Cals Room', 'In mercy\'s name, three days is all I need.')`;
         var queryArgs = [];
 
@@ -72,23 +77,32 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-    var queryString = 'SELECT * FROM messages';
-    // TODO - The exact query string and query args to use
-    // here depend on the schema you design, so I'll leave
-    // them up to you. */
+    request({
+        method: 'POST',
+        uri: 'http://127.0.0.1:3000/classes/messages',
+        json: {
+          username: 'Valjean',
+          message: 'In mercy\'s name, three days is all I need.',
+          roomname: 'Nick Room'
+        }
+      }, function() {
+      var queryString = 'SELECT * FROM messages';
+      // TODO - The exact query string and query args to use
+      // here depend on the schema you design, so I'll leave
+      // them up to you. */
 
-    // we removed query args ???
-    var queryArgs = ['Cal'];
-    dbConnection.query(queryString, queryArgs, function(err) {
-      if (err) { throw err; }
+      var queryArgs = [];
+      dbConnection.query(queryString, queryArgs, function(err) {
+        if (err) { throw err; }
 
-      // Now query the Node chat server and see if it returns
-      // the message we just inserted:
-      request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
-        var messageLog = JSON.parse(body);
-        expect(messageLog[0].message_text).to.equal('This is a test message');
-        expect(messageLog[0].room_name).to.equal('Nick Room');
-        done();
+        // Now query the Node chat server and see if it returns
+        // the message we just inserted:
+        request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
+          var messageLog = JSON.parse(body);
+          expect(messageLog[0].message_text).to.equal('In mercy\'s name, three days is all I need.');
+          expect(messageLog[0].room_name).to.equal('Nick Room');
+          done();
+        });
       });
     });
   });
