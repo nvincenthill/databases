@@ -36,13 +36,12 @@ module.exports = {
 
   users: {
     // a function which produces all the users
-      get: function () {
-        let queryString = 'SELECT * FROM users';
-        let data = db.connection.query(queryString, function(err, data, fields) {
+    get: function () {
+      let queryString = 'SELECT * FROM users';
+      let data = db.connection.query(queryString, function(err, data, fields) {
         if (err) {
           console.log(err);
         }
-        console.log("The user results are: ", data);
       });
     },
 
@@ -52,7 +51,7 @@ module.exports = {
       let callback = cb;
       let queryString = `INSERT INTO users (user_name) VALUES ("${data}")`;
       db.connection.query(queryString, function(err, data, fields) {
-        console.log(err)
+        // console.log(err);
         callback(err, data);
       });
     }

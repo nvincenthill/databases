@@ -154,10 +154,9 @@ var app = {
   },
 
   renderMessage: function(message) {
-    console.log(message)
     if (!message.room_name) {
       message.room_name = 'lobby';
-    }
+    };
 
     // Create a div to hold the chats
     var $chat = $('<div class="chat"/>');
